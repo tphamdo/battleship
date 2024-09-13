@@ -1,0 +1,7 @@
+10 x 10 grid
+
+ships length:
+4:1
+3:2
+2:3
+1:4
