@@ -11,4 +11,64 @@
 body {
   background-color: black;
   color: white;
+  font-family: sans-serif, serif;
+  padding: 24px;
+}
+
+.main {
+  /* display: none; */
+}
+
+.boards {
+  display: flex;
+  /* grid-template-columns: 1fr 1fr; */
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 120px;
+}
+.board div {
+  border: 1px solid white;
+}
+
+.board {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.hit {
+  background-color: red;
+}
+
+.miss {
+  background-color: yellow;
+}
+
+.ship {
+  background-color: blue;
+}
+
+.turn-message {
+  margin-top: 60px;
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.board-name {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.player-change {
+  height: 100vh;
+  font-size: 4rem;
+  font-weight: 800;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* visibility: hidden; */
+}
+
+.player-change::after {
+  content: "DOOG";
 }
