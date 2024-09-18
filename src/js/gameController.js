@@ -5,9 +5,8 @@ class GameController {
   #activePlayer;
   #waitingPlayer;
 
-  constructor(size = 10, player1Name = "Player 1", player2Name = "Computer") {
-    let gb = new Gameboard(size);
-    this.player1 = new Player(gb, player1Name);
+  constructor({ size = 10, player1Name = "You", player2Name = "Computer" }) {
+    this.player1 = new Player(new Gameboard(size), player2Name);
     this.player2 = new Player(new Gameboard(size), player2Name);
     this.#activePlayer = this.player1;
     this.#waitingPlayer = this.player2;
@@ -15,7 +14,7 @@ class GameController {
 
   playTurn(coord) {
     this.#waitingPlayer.gameboard.receiveAttack(coord);
-    this.switchPlayerTurn();
+    this.#switchPlayerTurn();
   }
 
   get activePlayer() {
@@ -26,7 +25,7 @@ class GameController {
     return this.#waitingPlayer;
   }
 
-  switchPlayerTurn() {
+  #switchPlayerTurn() {
     [this.#activePlayer, this.#waitingPlayer] = [
       this.#waitingPlayer,
       this.#activePlayer,
