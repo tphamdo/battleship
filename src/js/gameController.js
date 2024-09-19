@@ -29,6 +29,14 @@ class GameController {
     return this.#waitingPlayer;
   }
 
+  get player1Board() {
+    return this.player1.gameboard.board;
+  }
+
+  get player2Board() {
+    return this.player2.gameboard.board;
+  }
+
   #switchPlayerTurn() {
     [this.#activePlayer, this.#waitingPlayer] = [
       this.#waitingPlayer,

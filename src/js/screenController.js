@@ -14,11 +14,17 @@ function ScreenController() {
       });
     });
 
-    displayOwnBoard({ board: board1, boardContainer: $board1 });
-    displayOpponentBoard({ board: board2, boardContainer: $board2 });
+    displayOwnBoard({ board: gc.player1Board, boardContainer: $board1 });
+    displayOpponentBoard({
+      board: gc.player2Board,
+      boardContainer: $board2,
+    });
   };
 
-  const updateGridDimens = ({ boardContainer, height = GRID_HEIGHT_PX }) => {
+  const updateGridDimens = ({
+    boardContainer,
+    height = GRID_HEIGHT_PX,
+  } = {}) => {
     boardContainer.style.height = `${height}px`;
     boardContainer.style.width = `${height}px`;
   };
@@ -35,7 +41,7 @@ function ScreenController() {
         div.style.height = `${gridHeightPx / numRows}px`;
         div.style.width = `${gridHeightPx / numRows}px`;
 
-        div.classList.add(getBoardPointClass({ boardValue: board[i][j] }));
+        div.classList.add(getBoardValueClass({ boardValue: board[i][j] }));
         boardContainer.appendChild(div);
       }
     }
@@ -46,7 +52,7 @@ function ScreenController() {
     boardContainer,
     gridHeightPx = GRID_HEIGHT_PX,
     numRows = ROWS,
-  }) => {
+  } = {}) => {
     for (let i = 0; i < ROWS; ++i) {
       for (let j = 0; j < ROWS; ++j) {
         let div = document.createElement("div");
@@ -56,13 +62,13 @@ function ScreenController() {
         if (typeof board[i][j] === "number") {
           div.classList.add("ship");
         }
-        div.classList.add(getBoardPointClass({ boardValue: board[i][j] }));
+        div.classList.add(getBoardValueClass(board[i][j]));
         boardContainer.appendChild(div);
       }
     }
   };
 
-  const getBoardPointClass = ({ boardValue }) => {
+  const getBoardValueClass = (boardValue) => {
     switch (boardValue) {
       case "H":
         return "hit";

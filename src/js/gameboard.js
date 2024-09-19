@@ -83,6 +83,7 @@ class Gameboard {
       coord.x >= 0 && coord.y >= 0 && coord.x < this.size && coord.y < this.size
     );
   }
+
   get board() {
     return this.#board;
   }
