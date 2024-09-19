@@ -5,7 +5,11 @@ class GameController {
   #activePlayer;
   #waitingPlayer;
 
-  constructor({ size = 10, player1Name = "You", player2Name = "Computer" }) {
+  constructor({
+    size = 10,
+    player1Name = "You",
+    player2Name = "Computer",
+  } = {}) {
     this.player1 = new Player(new Gameboard(size), player1Name);
     this.player2 = new Player(new Gameboard(size), player2Name);
     this.#activePlayer = this.player1;

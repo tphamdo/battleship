@@ -1,5 +1,10 @@
 const GameController = require("./gameController.js");
 
+describe("Constructor", function () {
+  it("empty constructor should work", function () {
+    expect(() => new GameController()).not.toThrowError();
+  });
+});
 describe("playTurn", function () {
   it("should switch player turn", function () {
     const PLAYER_1 = "Player 1";
