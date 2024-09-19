@@ -1,7 +1,8 @@
 class Gameboard {
   #board;
   #curShipId = 0;
-  #ships = [];
+  ships = [];
+  sunkShips = 0;
 
   constructor(size = 10) {
     this.size = size;
@@ -19,7 +20,7 @@ class Gameboard {
     }
 
     for (let i = 0; i < ship.length; ++i) {
-      this.#board[startCoord.y][startCoord.x] = this.#ships.length + 1;
+      this.#board[startCoord.y][startCoord.x] = this.ships.length + 1;
       if (dir === "v") {
         startCoord.y++;
       } else {
@@ -27,20 +28,26 @@ class Gameboard {
       }
     }
 
-    this.#ships.push(ship);
+    this.ships.push(ship);
   }
 
   receiveAttack({ x, y }) {
     if (!this.isCoordValid({ x, y })) throw new Error("Invalid Coordinate");
     let value = this.#board[y][x];
-    if (typeof value === "number") {
-      this.#ships[value - 1].hit();
+    if (typeof value === "number" && value > 0) {
+      let ship = this.ships[value - 1];
+      ship.hit();
+      if (ship.isSunk()) this.sunkShips++;
       this.#board[y][x] = -value;
     } else if (value === "E") {
       this.#board[y][x] = "M";
     } else {
       throw new Error("Attacking grid position that has already been tried");
     }
+  }
+
+  allShipsSunk() {
+    return this.sunkShips === this.ships.length;
   }
 
   isPlacementValid(startCoord, length, dir) {

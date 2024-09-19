@@ -299,3 +299,30 @@ describe("receiveAttack", function () {
     });
   });
 });
+
+describe("allShipsSunk", function () {
+  it("should indicate if when all ships are sunk", function () {
+    const testCases = [
+      {
+        placements: [{ coord: { x: 0, y: 3 }, ship: new Ship(2), dir: "h" }],
+        size: 4,
+        attacks: [
+          { x: 0, y: 3 },
+          { x: 1, y: 3 },
+        ],
+      },
+    ];
+
+    testCases.forEach((tc) => {
+      let gb = new Gameboard(tc.size);
+      tc.placements.forEach((p) => {
+        gb.placeShip(p.ship, p.coord, p.dir);
+      });
+      expect(gb.allShipsSunk()).toBe(false);
+      tc.attacks.forEach((a) => {
+        gb.receiveAttack(a);
+      });
+      expect(gb.allShipsSunk()).toBe(true);
+    });
+  });
+});
