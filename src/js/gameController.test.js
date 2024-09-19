@@ -8,6 +8,7 @@ describe("playTurn", function () {
       player1Name: PLAYER_1,
       player2Name: PLAYER_2,
     });
+
     expect(gc.activePlayer.name).toBe(PLAYER_1);
     expect(gc.waitingPlayer.name).toBe(PLAYER_2);
 
