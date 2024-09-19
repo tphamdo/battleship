@@ -12,9 +12,9 @@ class GameController {
   static get DEFAULT_SHIP_SIZES() {
     return [
       ...Array(1).fill(5),
-      ...Array(2).fill(4),
-      ...Array(3).fill(3),
-      ...Array(4).fill(3),
+      ...Array(1).fill(4),
+      ...Array(2).fill(3),
+      ...Array(1).fill(2),
       // ...Array(5).fill(2),
     ];
   }
