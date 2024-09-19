@@ -4,14 +4,10 @@ class Gameboard {
   #ships = [];
 
   constructor(size = 10) {
-    this.#board = new Array(size);
     this.size = size;
-    for (let i = 0; i < size; ++i) {
-      this.#board[i] = new Array(size);
-      for (let j = 0; j < size; ++j) {
-        this.#board[i][j] = "E";
-      }
-    }
+    this.#board = Array(size)
+      .fill()
+      .map((_) => new Array(size).fill("E"));
   }
 
   placeShip(ship, startCoord, dir) {
@@ -23,7 +19,7 @@ class Gameboard {
     }
 
     for (let i = 0; i < ship.length; ++i) {
-      this.#board[startCoord.y][startCoord.x] = this.#ships.length;
+      this.#board[startCoord.y][startCoord.x] = this.#ships.length + 1;
       if (dir === "v") {
         startCoord.y++;
       } else {
@@ -34,14 +30,16 @@ class Gameboard {
     this.#ships.push(ship);
   }
 
-  receiveAttack(coord) {
-    if (!this.isCoordValid(coord)) return;
-    let idx = this.#board[coord.y][coord.x];
-    if (typeof idx === "number") {
-      this.#ships[idx].hit();
-      this.#board[coord.y][coord.x] = "H";
+  receiveAttack({ x, y }) {
+    if (!this.isCoordValid({ x, y })) throw new Error("Invalid Coordinate");
+    let value = this.#board[y][x];
+    if (typeof value === "number") {
+      this.#ships[value - 1].hit();
+      this.#board[y][x] = -value;
+    } else if (value === "E") {
+      this.#board[y][x] = "M";
     } else {
-      this.#board[coord.y][coord.x] = "M";
+      throw new Error("Attacking grid position that has already been tried");
     }
   }
 
@@ -82,6 +80,11 @@ class Gameboard {
     return (
       coord.x >= 0 && coord.y >= 0 && coord.x < this.size && coord.y < this.size
     );
+  }
+
+  isHitOrMiss({ x, y }) {
+    let value = this.#board[y][x];
+    return (typeof value === "number" && value < 0) || value === "M";
   }
 
   get board() {

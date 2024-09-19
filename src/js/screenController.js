@@ -1,111 +1,134 @@
 const GameController = require("./gameController.js");
 
 function ScreenController() {
-  const gc = new GameController();
   const ROWS = 10;
   const GRID_HEIGHT_PX = 600;
-  const $board1 = document.querySelector(".board-1");
-  const $board2 = document.querySelector(".board-2");
+  const $board1 = document.querySelector(".board-1 .board");
+  const $board2 = document.querySelector(".board-2 .board");
+  const $board1Name = document.querySelector(".board-1 .name");
+  const $board2Name = document.querySelector(".board-2 .name");
 
-  const init = () => {
+  const gc = new GameController();
+  gc.initDefaults();
+  render();
+
+  function render() {
     [$board1, $board2].forEach((boardContainer) => {
+      boardContainer.textContent = "";
       updateGridDimens({
         boardContainer: boardContainer,
       });
     });
 
-    displayOwnBoard({ board: gc.player1Board, boardContainer: $board1 });
+    displayPlayerName({
+      name: gc.player1.name,
+      boardNameContainer: $board1Name,
+    });
+
+    displayPlayerName({
+      name: gc.player2.name,
+      boardNameContainer: $board2Name,
+    });
+
+    displayOwnBoard({
+      board: gc.player1Board,
+      boardContainer: $board1,
+      numRows: gc.player1Board.length,
+    });
+
     displayOpponentBoard({
       board: gc.player2Board,
       boardContainer: $board2,
+      numRows: gc.player2Board.length,
     });
-  };
+  }
 
-  const updateGridDimens = ({
-    boardContainer,
-    height = GRID_HEIGHT_PX,
-  } = {}) => {
+  function updateGridDimens({ boardContainer, height = GRID_HEIGHT_PX } = {}) {
     boardContainer.style.height = `${height}px`;
     boardContainer.style.width = `${height}px`;
-  };
+  }
 
-  const displayOpponentBoard = ({
+  function displayOpponentBoard({
     board,
     boardContainer,
     gridHeightPx = GRID_HEIGHT_PX,
     numRows = ROWS,
-  }) => {
-    for (let i = 0; i < ROWS; ++i) {
-      for (let j = 0; j < ROWS; ++j) {
+  }) {
+    for (let y = 0; y < numRows; ++y) {
+      for (let x = 0; x < numRows; ++x) {
         let div = document.createElement("div");
         div.style.height = `${gridHeightPx / numRows}px`;
         div.style.width = `${gridHeightPx / numRows}px`;
+        div.dataset.y = y;
+        div.dataset.x = x;
 
-        div.classList.add(getBoardValueClass({ boardValue: board[i][j] }));
+        div.classList.add(...getOpponentClassList(board[y][x]));
+        div.addEventListener("click", handleHit, { once: true });
         boardContainer.appendChild(div);
       }
     }
-  };
+  }
 
-  const displayOwnBoard = ({
+  function displayOwnBoard({
     board,
     boardContainer,
     gridHeightPx = GRID_HEIGHT_PX,
     numRows = ROWS,
-  } = {}) => {
-    for (let i = 0; i < ROWS; ++i) {
-      for (let j = 0; j < ROWS; ++j) {
+  } = {}) {
+    console.log(board.length);
+    for (let y = 0; y < numRows; ++y) {
+      for (let x = 0; x < numRows; ++x) {
         let div = document.createElement("div");
         div.style.height = `${gridHeightPx / numRows}px`;
         div.style.width = `${gridHeightPx / numRows}px`;
 
-        if (typeof board[i][j] === "number") {
-          div.classList.add("ship");
-        }
-        div.classList.add(getBoardValueClass(board[i][j]));
+        div.classList.add(...getOwnClassList(board[y][x]));
         boardContainer.appendChild(div);
       }
     }
-  };
+  }
 
-  const getBoardValueClass = (boardValue) => {
+  function displayPlayerName({ name, boardNameContainer }) {
+    boardNameContainer.textContent = name;
+  }
+
+  function getOwnClassList(boardValue) {
     switch (boardValue) {
-      case "H":
-        return "hit";
+      // case "H":
+      //   return ["hit", "ship"];
       case "M":
-        return "miss";
+        return ["miss"];
+      case "E":
+        return ["empty"];
       default:
-        return "empty";
+        if (boardValue < 0) return ["hit", "ship"];
+        return ["ship"];
     }
-  };
+  }
 
-  board1 = [
-    ["E", "E", "E", "E", "E", "E", 0, 0, 0, 0],
-    [4, 4, "E", "E", "E", "E", "E", "E", "E", "E"],
-    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
-    ["E", "E", "E", "E", "E", "E", "E", "1", "E", "E"],
-    ["E", "E", 3, "E", "E", "E", "E", "1", "E", "E"],
-    ["E", "E", 3, "E", "E", "E", "E", "1", "E", "E"],
-    [5, "E", "E", "E", "E", "E", "E", "E", "E", "E"],
-    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
-    ["E", "E", "E", "E", "E", 2, 2, 2, "E", "E"],
-    [6, "E", 7, "E", "E", "E", "E", "E", "E", 8],
-  ];
+  function getOpponentClassList(boardValue) {
+    switch (boardValue) {
+      case "E":
+        return ["empty", "clickable"];
+      case "M":
+        return ["miss"];
+      default:
+        if (boardValue < 0) return ["hit"];
+        return ["clickable"];
+    }
+  }
 
-  board2 = [
-    ["E", "E", "E", 6, "E", "E", "E", "E", 7, "E"],
-    ["E", "E", "E", "E", "E", "E", "M", "E", "E", "E"],
-    ["E", "E", "E", "E", "E", "E", "E", "E", "E", "E"],
-    [9, "M", 0, 0, 0, 0, "E", "E", "E", 8],
-    ["E", "E", "E", "E", "E", 1, "E", "E", "E", "E"],
-    ["E", "E", "E", "E", "E", "H", "E", "E", "E", "E"],
-    ["E", 4, "E", "E", "E", 1, 2, 2, "E", "E"],
-    ["E", "H", "E", "E", "E", "E", "E", "E", "E", "E"],
-    ["E", 4, 5, 5, "E", "E", "E", "E", "E", "E"],
-    ["M", 4, "M", "E", "E", "E", "E", "H", 3, "E"],
-  ];
+  function handleHit(event) {
+    let el = event.target;
+    let x = el.dataset.x;
+    let y = el.dataset.y;
 
-  init();
+    if (gc.player2.gameboard.isHitOrMiss({ x, y })) return;
+
+    gc.playTurn({ x, y });
+    gc.playRandomTurn();
+    render();
+  }
 }
 
 module.exports = ScreenController;

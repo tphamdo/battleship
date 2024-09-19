@@ -1,13 +1,11 @@
 class Player {
-  #gameboard;
-
   constructor(gameboard, name) {
-    this.#gameboard = gameboard;
+    this.gameboard = gameboard;
     this.name = name;
   }
 
-  get gameboard() {
-    return this.#gameboard;
+  placeShip({ ship, coord, dir }) {
+    this.gameboard.placeShip(ship, coord, dir);
   }
 }
 

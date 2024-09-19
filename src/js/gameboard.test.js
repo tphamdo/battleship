@@ -34,7 +34,7 @@ describe("placeShip", function () {
         dir: "h",
         size: 4,
         expected: [
-          [0, 0, 0, "E"],
+          [1, 1, 1, "E"],
           ["E", "E", "E", "E"],
           ["E", "E", "E", "E"],
           ["E", "E", "E", "E"],
@@ -47,9 +47,9 @@ describe("placeShip", function () {
         size: 4,
         expected: [
           ["E", "E", "E", "E"],
-          ["E", 0, "E", "E"],
-          ["E", 0, "E", "E"],
-          ["E", 0, "E", "E"],
+          ["E", 1, "E", "E"],
+          ["E", 1, "E", "E"],
+          ["E", 1, "E", "E"],
         ],
       },
       {
@@ -58,7 +58,7 @@ describe("placeShip", function () {
         dir: "h",
         size: 4,
         expected: [
-          [0, 0, 0, 0],
+          [1, 1, 1, 1],
           ["E", "E", "E", "E"],
           ["E", "E", "E", "E"],
           ["E", "E", "E", "E"],
@@ -70,10 +70,10 @@ describe("placeShip", function () {
         dir: "v",
         size: 4,
         expected: [
-          [0, "E", "E", "E"],
-          [0, "E", "E", "E"],
-          [0, "E", "E", "E"],
-          [0, "E", "E", "E"],
+          [1, "E", "E", "E"],
+          [1, "E", "E", "E"],
+          [1, "E", "E", "E"],
+          [1, "E", "E", "E"],
         ],
       },
     ];
@@ -134,10 +134,10 @@ describe("placeShip", function () {
         ],
         size: 4,
         expected: [
-          [0, 0, 0, "E"],
-          ["E", 1, "E", "E"],
-          ["E", 1, "E", "E"],
-          ["E", 1, "E", "E"],
+          [1, 1, 1, "E"],
+          ["E", 2, "E", "E"],
+          ["E", 2, "E", "E"],
+          ["E", 2, "E", "E"],
         ],
       },
       {
@@ -147,8 +147,8 @@ describe("placeShip", function () {
         ],
         size: 4,
         expected: [
-          [0, 0, 0, "E"],
           [1, 1, 1, "E"],
+          [2, 2, 2, "E"],
           ["E", "E", "E", "E"],
           ["E", "E", "E", "E"],
         ],
@@ -173,7 +173,7 @@ describe("placeShip", function () {
         ],
         size: 4,
         expected: [
-          [0, 0, 0, "E"],
+          [1, 1, 1, "E"],
           ["E", "E", "E", "E"],
           ["E", "E", "E", "E"],
           ["E", "E", "E", "E"],
@@ -189,7 +189,7 @@ describe("placeShip", function () {
           ["E", "E", "E", "E"],
           ["E", "E", "E", "E"],
           ["E", "E", "E", "E"],
-          [0, 0, 0, 0],
+          [1, 1, 1, 1],
         ],
       },
     ];
@@ -216,7 +216,7 @@ describe("receiveAttack", function () {
           ["E", "E", "E", "E"],
           ["E", "E", "E", "E"],
           ["E", "E", "E", "E"],
-          [0, 0, "H", 0],
+          [1, 1, -1, 1],
         ],
         attacks: [{ x: 2, y: 3 }],
       },
@@ -243,7 +243,7 @@ describe("receiveAttack", function () {
           ["E", "E", "E", "E"],
           ["E", "M", "E", "E"],
           ["E", "E", "M", "E"],
-          [0, 0, 0, 0],
+          [1, 1, 1, 1],
         ],
         attacks: [
           { x: 2, y: 2 },
@@ -273,10 +273,10 @@ describe("receiveAttack", function () {
         ],
         size: 4,
         expected: [
-          ["E", "E", 1, "E"],
-          ["E", "M", 1, "E"],
-          ["M", "E", "H", "E"],
-          [0, 0, 0, "H"],
+          ["E", "E", 2, "E"],
+          ["E", "M", 2, "E"],
+          ["M", "E", -2, "E"],
+          [1, 1, 1, -1],
         ],
         attacks: [
           { x: 0, y: 2 },
