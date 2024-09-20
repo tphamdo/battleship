@@ -2,7 +2,7 @@ const GameController = require("./gameController.js");
 
 function ScreenController() {
   const ROWS = 10;
-  const GRID_HEIGHT_PX = 600;
+  const GRID_HEIGHT_PX = 500;
   const $board1 = document.querySelector(".board-1 .board");
   const $board2 = document.querySelector(".board-2 .board");
   const $board1Name = document.querySelector(".board-1 .name");
@@ -83,14 +83,13 @@ function ScreenController() {
     for (let y = 0; y < numRows; ++y) {
       for (let x = 0; x < numRows; ++x) {
         let div = document.createElement("div");
-        div.classList.add("cell");
         div.style.height = `${gridHeightPx / numRows}px`;
         div.style.width = `${gridHeightPx / numRows}px`;
         div.dataset.y = y;
         div.dataset.x = x;
 
         div.classList.add(...getOpponentCellClassList(board[y][x]));
-        div.addEventListener("click", handleHit, { once: true });
+        div.addEventListener("click", handleHit /*{ once: true }*/);
         boardContainer.appendChild(div);
       }
     }
@@ -105,7 +104,6 @@ function ScreenController() {
     for (let y = 0; y < numRows; ++y) {
       for (let x = 0; x < numRows; ++x) {
         let div = document.createElement("div");
-        div.classList.add("cell");
         div.style.height = `${gridHeightPx / numRows}px`;
         div.style.width = `${gridHeightPx / numRows}px`;
 
@@ -148,30 +146,29 @@ function ScreenController() {
   function getOwnCellClassList(cellValue) {
     switch (cellValue) {
       case "E":
-        return ["empty"];
+        return ["cell", "empty"];
       case "M":
-        return ["miss"];
+        return ["cell", "miss"];
       default:
-        if (cellValue < 0) return ["hit", "ship"];
-        return ["ship"];
+        if (cellValue < 0) return ["cell", "hit", "ship"];
+        return ["cell", "ship"];
     }
   }
 
   function getOpponentCellClassList(cellValue) {
     switch (cellValue) {
       case "E":
-        return ["empty", "clickable"];
+        return ["cell", "empty", "clickable"];
       case "M":
-        return ["miss"];
+        return ["cell", "miss"];
       default:
-        if (cellValue < 0) return ["hit"];
-        return ["clickable"];
+        if (cellValue < 0) return ["cell", "hit"];
+        return ["cell", "clickable"];
     }
   }
 
   function handleHit(event) {
     if (gc.isGameOver()) return;
-
     let el = event.target;
     let x = el.dataset.x;
     let y = el.dataset.y;
