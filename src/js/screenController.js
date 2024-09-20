@@ -2,7 +2,7 @@ const GameController = require("./gameController.js");
 
 function ScreenController() {
   const ROWS = 10;
-  const GRID_HEIGHT_PX = 500;
+  const GRID_HEIGHT_PX = 450;
   const $board1 = document.querySelector(".board-1 .board");
   const $board2 = document.querySelector(".board-2 .board");
   const $board1Name = document.querySelector(".board-1 .name");
@@ -81,17 +81,19 @@ function ScreenController() {
     numRows = ROWS,
   }) {
     for (let y = 0; y < numRows; ++y) {
+      let tr = document.createElement("tr");
       for (let x = 0; x < numRows; ++x) {
-        let div = document.createElement("div");
-        div.style.height = `${gridHeightPx / numRows}px`;
-        div.style.width = `${gridHeightPx / numRows}px`;
-        div.dataset.y = y;
-        div.dataset.x = x;
+        let td = document.createElement("td");
+        td.style.height = `${gridHeightPx / numRows}px`;
+        td.style.width = `${gridHeightPx / numRows}px`;
+        td.dataset.y = y;
+        td.dataset.x = x;
 
-        div.classList.add(...getOpponentCellClassList(board[y][x]));
-        div.addEventListener("click", handleHit /*{ once: true }*/);
-        boardContainer.appendChild(div);
+        td.classList.add(...getOpponentCellClassList(board[y][x]));
+        td.addEventListener("click", handleHit /*{ once: true }*/);
+        tr.appendChild(td);
       }
+      boardContainer.appendChild(tr);
     }
   }
 
@@ -102,14 +104,16 @@ function ScreenController() {
     numRows = ROWS,
   } = {}) {
     for (let y = 0; y < numRows; ++y) {
+      let tr = document.createElement("tr");
       for (let x = 0; x < numRows; ++x) {
-        let div = document.createElement("div");
-        div.style.height = `${gridHeightPx / numRows}px`;
-        div.style.width = `${gridHeightPx / numRows}px`;
+        let td = document.createElement("td");
+        td.style.height = `${gridHeightPx / numRows}px`;
+        td.style.width = `${gridHeightPx / numRows}px`;
 
-        div.classList.add(...getOwnCellClassList(board[y][x]));
-        boardContainer.appendChild(div);
+        td.classList.add(...getOwnCellClassList(board[y][x]));
+        tr.appendChild(td);
       }
+      boardContainer.appendChild(tr);
     }
   }
 
