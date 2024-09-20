@@ -30,7 +30,7 @@ body {
   gap: 120px;
 }
 
-.board div {
+.board .cell {
   border: 1px solid white;
   display: flex;
   align-items: center;
@@ -52,7 +52,7 @@ body {
   content: "•";
 }
 
-.ship {
+.cell.ship {
   background-color: blue;
 }
 
@@ -68,4 +68,46 @@ body {
 
 .clickable:hover {
   background-color: grey;
+}
+
+.ships {
+  margin-top: 24px;
+}
+
+.ship-container {
+  margin-top: 6px;
+  display: flex;
+  gap: 6px;
+}
+
+.ship-cell {
+  height: 20px;
+  width: 20px;
+  background-color: grey;
+}
+
+.ship-cell.sunk {
+  background-color: red;
+}
+
+.shuffle-container {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.shuffle {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+button {
+  cursor: pointer;
+}
+
+.game-message {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 2rem;
 }

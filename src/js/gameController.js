@@ -15,7 +15,6 @@ class GameController {
       ...Array(1).fill(4),
       ...Array(2).fill(3),
       ...Array(1).fill(2),
-      // ...Array(5).fill(2),
     ];
   }
 
@@ -40,11 +39,8 @@ class GameController {
     while (true) {
       try {
         let rc = this.getRandomCoord();
-        console.log(this.player1.gameboard.board);
-        console.log(rc);
         this.#waitingPlayer.gameboard.receiveAttack(rc);
       } catch (error) {
-        console.log(error);
         continue;
       }
       break;
@@ -81,6 +77,19 @@ class GameController {
     this.#initRandomDefaultSizedBoard(this.player2);
   }
 
+  isGameOver() {
+    return (
+      this.player1.gameboard.allShipsSunk() ||
+      this.player2.gameboard.allShipsSunk()
+    );
+  }
+
+  getWinner() {
+    if (!this.isGameOver()) return null;
+    else if (this.player1.gameboard.allShipsSunk()) return this.player2;
+    return this.player1;
+  }
+
   #initRandomDefaultSizedBoard(player) {
     player.gameboard = new Gameboard(this.gridSize);
     GameController.DEFAULT_SHIP_SIZES.forEach((size) => {
@@ -93,13 +102,11 @@ class GameController {
             dir: GameController.getRandomDirection(),
           });
         } catch (error) {
-          console.log(error);
           continue; // keep trying to place ship if fails
         }
         break;
       }
     });
-    console.log(player.gameboard.board);
   }
 
   getRandomCoord() {
